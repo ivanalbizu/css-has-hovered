@@ -75,6 +75,8 @@ body {
     display: inline-block;
     width: calc((1 / var(--cols)) * 100%);
     height: calc((1 / var(--rows)) * 100%);
+    // Debug CSS :has():
+    // Uncomment two CSS lines commented
     //outline: 1px solid #fff;
     //outline-offset: -2px;
   }
