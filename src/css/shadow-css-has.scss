@@ -1,0 +1,121 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #fabe28;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  min-height: 100vh;
+}
+
+.device {
+  margin: 40px auto 20px;
+  aspect-ratio: 720 / 1600;
+  width: auto;
+  max-height: 80vh;
+  max-width: min(200px, 98%);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  --factor-x: 0;
+  --factor-y: 0;
+  --factor-rotate-X: calc(var(--factor-y) * 5deg);
+  --factor-rotate-Y: calc(var(--factor-x) * -20deg);
+
+  --illuminated-color: hsl(240, 25%, 35%);
+  --obscured-color: hsl(240, 25%, 20%);
+  --shadow-color: hsla(0, 0%, 0%, 0.66);
+
+  --x-mobile-edge: calc(6px * var(--factor-x));
+  --y-mobile-edge: calc(6px * var(--factor-y));
+
+  --x-shadow: calc(var(--factor-x) * 40px);
+  --y-shadow: calc(var(--factor-y) * 40px);
+  --computed-xy: calc(var(--factor-y) * var(--factor-x));
+  --blur-shadow: calc(max(var(--computed-xy), -1 * var(--computed-xy)) * 80px);
+
+  border-radius: 20px;
+  box-shadow: 0 0 0 10px var(--illuminated-color),
+    var(--x-mobile-edge) var(--y-mobile-edge) 0px 10px var(--obscured-color),
+    var(--x-shadow) var(--y-shadow) var(--blur-shadow) var(--shadow-color);
+
+  transform-origin: center;
+  transform: rotateX(var(--factor-rotate-X)) rotateY(var(--factor-rotate-Y));
+  transition: transform 0.8s, box-shadow 0.8s;
+  transition-timing-function: ease-in-out;
+}
+
+.device {
+  --cols: 5;
+  --rows: 7;
+  --max-factor-value: 2;
+  position: relative;
+  display: grid;
+  gap: 0;
+  .fragments,
+  img {
+    grid-column: 1/-1;
+    grid-row: 1/-1;
+  }
+  .fragments {
+    z-index: 1;
+    font-size: 0;
+  }
+  .fragment {
+    display: inline-block;
+    width: calc((1 / var(--cols)) * 100%);
+    height: calc((1 / var(--rows)) * 100%);
+    //outline: 1px solid #fff;
+    //outline-offset: -2px;
+  }
+
+  //cols
+  &:has(:nth-child(5n - 4):hover) {
+    --factor-x: 2;
+  }
+  &:has(:nth-child(5n - 3):hover) {
+    --factor-x: 1;
+  }
+  &:has(:nth-child(5n - 2):hover) {
+    --factor-x: 0;
+  }
+  &:has(:nth-child(5n - 1):hover) {
+    --factor-x: -1;
+  }
+  &:has(:nth-child(5n):hover) {
+    --factor-x: -2;
+  }
+
+  //rows
+  &:has(:nth-child(n):nth-child(-n + 5):hover) {
+    --factor-y: 2;
+  }
+  &:has(:nth-child(n + 6):nth-child(-n + 10):hover) {
+    --factor-y: 1.333;
+  }
+  &:has(:nth-child(n + 11):nth-child(-n + 15):hover) {
+    --factor-y: 0.666;
+  }
+  &:has(:nth-child(n + 16):nth-child(-n + 20):hover) {
+    --factor-y: 0;
+  }
+  &:has(:nth-child(n + 21):nth-child(-n + 25):hover) {
+    --factor-y: -0.666;
+  }
+  &:has(:nth-child(n + 26):nth-child(-n + 30):hover) {
+    --factor-y: -1.333;
+  }
+  &:has(:nth-child(n + 31):nth-child(-n + 35):hover) {
+    --factor-y: -2;
+  }
+}
